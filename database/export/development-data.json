@@ -1,0 +1,11 @@
+{
+  "environment": "development",
+  "exported_at": "2026-10-14T08:58:26.971962+00:00",
+  "tables": {
+    "products": [],
+    "orders": [],
+    "deposits": [],
+    "inquiries": [],
+    "user_favorites": []
+  }
+}

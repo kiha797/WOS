@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Monitor } from "lucide-react";
-
-const companies = ["동원약품", "신덕약품", "보덕메디팜", "아이팜코리아", "인천약품", "신덕팜"];
+import CompanyOrderCards, { type OrderCompany } from "@/components/CompanyOrderCards";
 
 const companyColors: Record<string, string> = {
   "동원약품":   "bg-blue-500",
@@ -53,33 +51,17 @@ const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 const orderPeriod = `${fmt(firstOfMonth)} ~ ${fmt(today)}`;
 const balancePeriod = fmt(today);
 
-export default function HomePage() {
-  const [activeTab, setActiveTab] = useState("동원약품");
+interface HomePageProps {
+  companies: OrderCompany[];
+  onChooseCompany: (company: string) => void;
+}
 
+export default function HomePage({ companies, onChooseCompany }: HomePageProps) {
   return (
     <div className="flex flex-col h-full overflow-y-auto bg-gray-50">
-      {/* Company tabs */}
-      <div className="flex items-center gap-1.5 px-4 pt-3 pb-2 bg-white border-b flex-wrap">
-        {companies.map((c) => (
-          <button
-            key={c}
-            onClick={() => setActiveTab(c)}
-            data-testid={`tab-company-${c}`}
-            className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-              activeTab === c
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
-          >
-            {c}
-          </button>
-        ))}
-        <button className="ml-1 flex items-center justify-center w-6 h-6 rounded bg-gray-100 text-gray-500 hover:bg-gray-200 text-xs">
-          ⇅
-        </button>
-      </div>
-
       <div className="p-4 space-y-4">
+        <CompanyOrderCards companies={companies} onChooseCompany={onChooseCompany} />
+
         {/* Top cards row */}
         <div className="grid grid-cols-3 gap-3">
           {/* WOS 주문금액 */}

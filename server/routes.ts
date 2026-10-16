@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { registerCompanyLogoRoutes } from "./company-logo-routes";
 
 // This app currently displays one hard-coded signed-in demo profile and has no
 // authentication middleware. Keep the account scope server-owned rather than
@@ -10,6 +11,8 @@ const currentDemoUserId = "demo-saebom-pharmacy";
 const productIdPattern = /^[a-zA-Z0-9_-]{1,64}$/;
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  registerCompanyLogoRoutes(app);
+
   app.get("/api/favorites", async (_req, res) => {
     try {
       const favoriteProductIds = await storage.getFavoriteProductIds(currentDemoUserId);

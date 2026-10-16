@@ -1,0 +1,5 @@
+- [약품 상세정보 무결성](drug-information-integrity.md) — 참조 화면의 다른 약품 임상 문구를 기본값으로 넣지 말고 제품별로 확인된 정보만 표시한다.
+- [Neon 빈 결과 처리](neon-empty-results.md) — Replit의 Neon 연결에서 결과가 0행일 때 `rows`가 null일 수 있어 항상 한 행을 반환하는 쿼리가 안전하다.
+- [자동 병합 DB 동기화 안전성](post-merge-schema-safety.md) — 자동 스키마 동기화에서 데이터 손실 작업을 강제 승인하지 않는다.
+- [GitHub 업로드 권한 확인](github-upload-authorization.md) — 공개 저장소 복제 성공이나 연결의 active 상태만으로 쓰기 권한을 판단하지 않는다.
+- [회사 선택 디자인](company-selection-design.md) — 사용자가 상단 회사 책갈피 영역을 삭제하도록 요청했으므로 이전 디자인 요구로 다시 추가하지 않는다.

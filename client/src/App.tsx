@@ -11,6 +11,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { CompanyLogoEditor } from "@/components/CompanyLogoEditor";
+import { useCompanyLogos } from "@/hooks/use-company-logos";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -34,7 +36,6 @@ import {
 } from "@/components/ui/popover";
 import {
   Menu,
-  Bell,
   ShoppingCart,
   ChevronDown,
   User,
@@ -42,15 +43,14 @@ import {
   Settings,
   FileText,
   Building2,
-  Search,
-  Wallet,
-  Package,
   Phone,
   UserCircle2,
   Home,
   Check,
 } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { COMPANY_NAMES } from "@shared/company-branding";
+import type { OrderCompany } from "@/components/CompanyOrderCards";
+import { useState } from "react";
 import HomePage from "@/pages/HomePage";
 import OrderPage from "@/pages/OrderPage";
 import OnlineOrdersPage from "@/pages/OnlineOrdersPage";
@@ -70,10 +70,26 @@ import NotFound from "@/pages/not-found";
 
 
 
-function Router({ selectedColor }: { selectedColor?: string }) {
+function Router({
+  selectedColor,
+  companies,
+  onCompanyChange,
+}: {
+  selectedColor?: string;
+  companies: OrderCompany[];
+  onCompanyChange: (company: string) => void;
+}) {
+  const [, navigate] = useLocation();
+  const chooseCompany = (company: string) => {
+    onCompanyChange(company);
+    navigate("/order");
+  };
+
   return (
     <Switch>
-      <Route path="/" component={HomePage} />
+      <Route path="/">
+        {() => <HomePage companies={companies} onChooseCompany={chooseCompany} />}
+      </Route>
       <Route path="/order">
         {() => <OrderPage selectedColor={selectedColor} />}
       </Route>
@@ -109,94 +125,7 @@ function Router({ selectedColor }: { selectedColor?: string }) {
   );
 }
 
-function HeaderSearch({ onNavigate }: { onNavigate: (url: string) => void }) {
-  const [query, setQuery] = useState("");
-  const [focused, setFocused] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        inputRef.current?.focus();
-      }
-      if (e.key === "Escape") inputRef.current?.blur();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
-
-  const suggestions = [
-    { name: "타이레놀정500mg", mfr: "한국얀센" },
-    { name: "아스피린프로텍트정100mg", mfr: "바이엘코리아" },
-    { name: "메트포르민염산염정500mg", mfr: "동아제약" },
-    { name: "오메가3연질캡슐", mfr: "일동제약" },
-    { name: "비타민D3소프트캡슐", mfr: "유한양행" },
-  ].filter((s) => query.length > 0 && s.name.toLowerCase().includes(query.toLowerCase()));
-
-  const isOpen = focused && (suggestions.length > 0 || query.length > 0);
-
-  return (
-    <div className="relative w-full max-w-sm" data-testid="search-wrapper">
-      <div
-        className={`flex items-center gap-2 h-8 rounded-full border px-3 transition-all duration-200 bg-white ${
-          focused
-            ? "border-gray-300 shadow-[0_0_0_3px_rgba(0,0,0,0.08)]"
-            : "border-gray-200 hover:border-gray-300"
-        }`}
-      >
-        <Search className="h-3.5 w-3.5 shrink-0 text-gray-400" />
-        <input
-          ref={inputRef}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setTimeout(() => setFocused(false), 160)}
-          placeholder="주문 상품 검색"
-          className="flex-1 bg-transparent text-[13px] text-gray-800 placeholder:text-gray-400 outline-none min-w-0"
-          data-testid="input-search"
-        />
-        <kbd className="hidden sm:flex items-center gap-0.5 rounded border border-gray-200 px-1 py-0.5 text-[10px] text-gray-400 font-mono shrink-0">
-          ⌘K
-        </kbd>
-      </div>
-
-      {isOpen && (
-        <div className="absolute top-full mt-1.5 left-0 right-0 rounded-xl border border-gray-200 bg-white shadow-[0_8px_32px_rgba(30,64,175,0.2)] overflow-hidden z-[60]">
-          {suggestions.length > 0 ? (
-            <>
-              <div className="px-3 py-1.5 border-b border-gray-100">
-                <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wider">상품 검색 결과</span>
-              </div>
-              {suggestions.map((s) => (
-                <button
-                  key={s.name}
-                  className="w-full flex items-center justify-between px-3 py-2 text-left hover:bg-blue-50 transition-colors"
-                  onMouseDown={() => { setQuery(s.name); setFocused(false); }}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <div className="flex items-center justify-center w-6 h-6 rounded-md bg-blue-50 shrink-0">
-                      <Package className="h-3 w-3 text-blue-500" />
-                    </div>
-                    <span className="text-[13px] text-gray-800">{s.name}</span>
-                  </div>
-                  <span className="text-[11px] text-gray-400">{s.mfr}</span>
-                </button>
-              ))}
-            </>
-          ) : (
-            <div className="px-3 py-3 text-[12px] text-gray-400 text-center">"{query}" 검색 결과 없음</div>
-          )}
-          <div className="flex items-center px-3 py-1.5 border-t border-gray-100 bg-blue-50/50">
-            <span className="text-[10px] text-gray-400">Enter 검색 · Esc 닫기</span>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-const COMPANIES = ["동원약품", "신덕약품", "보덕메디팜", "아이팜코리아", "인천약품", "신덕팜"];
+const COMPANIES = COMPANY_NAMES;
 
 const COMPANY_META: Record<string, { color: string; hex: string; hexDark: string; initial: string; logoLabel: string; logoImg?: string; headerLogoImg?: string }> = {
   "동원약품":     { color: "bg-[#B30000]",  hex: "#B30000", hexDark: "#800000", initial: "동", logoLabel: "동원약품",    logoImg: dongwonLogoImg, headerLogoImg: dongwonLogoWhiteImg },
@@ -207,15 +136,34 @@ const COMPANY_META: Record<string, { color: string; hex: string; hexDark: string
   "신덕팜":       { color: "bg-purple-600", hex: "#9333ea", hexDark: "#6b21a8", initial: "신", logoLabel: "(주)신덕팜" },
 };
 
+const ORDER_COMPANIES: OrderCompany[] = COMPANIES.map((name) => ({
+  name,
+  color: COMPANY_META[name].hex,
+  defaultLogo: COMPANY_META[name].logoImg,
+  logoLabel: COMPANY_META[name].logoLabel,
+}));
+
 function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: string; onCompanyChange: (company: string) => void }) {
   const { toggleSidebar } = useSidebar();
-  const [, navigate] = useLocation();
+  const [location, navigate] = useLocation();
+  const isHome = location === "/";
   const cartCount = 3;
-  const notifCount = 2;
   const pendingOrders = 5;
 
   const selectedMeta = COMPANY_META[selectedCompany];
   const headerBg = selectedMeta.hex;
+  const companyLogos = useCompanyLogos();
+  const [companyMenuOpen, setCompanyMenuOpen] = useState(false);
+  const [editingLogo, setEditingLogo] = useState<{ company: string; variant: "standard" | "header" } | null>(null);
+  const openLogoEditor = (company: string, variant: "standard" | "header") => {
+    setCompanyMenuOpen(false);
+    setEditingLogo({ company, variant });
+  };
+  const customHeaderLogo = companyLogos.findLogo(selectedCompany, "header")?.url;
+  const currentHeaderLogo = customHeaderLogo
+    || selectedMeta.headerLogoImg
+    || companyLogos.findLogo(selectedCompany, "standard")?.url
+    || selectedMeta.logoImg;
 
   return (
     <header
@@ -224,10 +172,10 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
       data-testid="header-main"
     >
       {/* ── Main nav bar ── */}
-      <div className="flex items-center h-[64px] px-3 gap-3">
+      <div className="relative flex items-center h-[64px] px-2 gap-1 sm:px-3 sm:gap-3">
 
         {/* LEFT */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           <Button
             size="icon"
             variant="ghost"
@@ -239,42 +187,24 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
           </Button>
 
           <button
-            className="flex items-center justify-center w-6 h-6 rounded-md shrink-0 text-gray-700 bg-white hover:bg-white/90 transition-colors"
+            type="button"
+            aria-label="홈으로 이동"
+            title="홈으로 이동"
+            className="hidden sm:flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-white/90 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             onClick={() => navigate("/")}
             data-testid="button-brand"
           >
-            <Home className="h-3.5 w-3.5" />
+            <Home aria-hidden="true" className="h-5 w-5" />
           </button>
 
-          <DropdownMenu>
+          <div className="flex flex-col gap-0.5 lg:flex-row lg:items-center lg:gap-3">
+          <DropdownMenu open={companyMenuOpen} onOpenChange={setCompanyMenuOpen}>
             <DropdownMenuTrigger asChild>
               <button
-                className="hidden sm:flex items-center gap-1.5 h-8 px-2 rounded border border-white/50 bg-black/20 hover:bg-black/30 transition-colors"
+                className="flex items-center gap-1.5 h-8 px-2 max-[400px]:gap-1 max-[400px]:px-1 rounded border border-white/50 bg-black/20 hover:bg-black/30 transition-colors"
                 data-testid="button-company-select"
               >
-                <span className="text-[13px] font-semibold text-white">{selectedCompany}</span>
-                {(selectedMeta.headerLogoImg || selectedMeta.logoImg) && (
-                  <>
-                    <span className="h-3 w-px bg-white/40 shrink-0" />
-                    {selectedMeta.headerLogoImg ? (
-                      <div className="flex items-center justify-center w-[80px] h-[18px] shrink-0 overflow-hidden">
-                        <img
-                          src={selectedMeta.headerLogoImg}
-                          alt={selectedCompany}
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-center w-[80px] h-[16px] rounded bg-white shrink-0 overflow-hidden">
-                        <img
-                          src={selectedMeta.logoImg}
-                          alt={selectedCompany}
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                    )}
-                  </>
-                )}
+                <span className="text-[13px] max-[400px]:text-[11px] font-semibold text-white">주문회사 이동</span>
                 <ChevronDown className="h-3 w-3 text-white shrink-0" />
               </button>
             </DropdownMenuTrigger>
@@ -282,58 +212,90 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
               align="start"
               side="bottom"
               sideOffset={6}
-              className="w-[350px] p-2 rounded-xl border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.15)] bg-white"
+              className="w-[240px] max-w-[calc(100vw-1rem)] p-1.5 rounded-xl border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.15)] bg-white"
             >
+              <DropdownMenuLabel className="px-3 py-2 text-[11px] font-medium text-gray-500">
+                주문회사 선택
+              </DropdownMenuLabel>
               {COMPANIES.map((company) => {
-                const meta = COMPANY_META[company];
                 const isSelected = selectedCompany === company;
                 return (
                   <DropdownMenuItem
                     key={company}
-                    onClick={() => onCompanyChange(company)}
-                    className="flex items-center gap-3 rounded-lg focus:bg-blue-50 px-3 py-2.5 cursor-pointer"
+                    role="menuitemradio"
+                    aria-checked={isSelected}
+                    onSelect={() => onCompanyChange(company)}
+                    className={`flex min-h-11 w-full items-center justify-between rounded-lg px-3 py-2.5 text-[14px] cursor-pointer focus:bg-blue-50 focus:text-gray-900 ${
+                      isSelected
+                        ? "bg-blue-50/70 font-semibold text-gray-900"
+                        : "text-gray-700"
+                    }`}
                     data-testid={`menu-item-company-${company}`}
                   >
-                    {/* 이니셜 원형 */}
-                    <div className={`flex items-center justify-center w-9 h-9 rounded-full ${meta.color} text-white text-[14px] font-bold shrink-0`}>
-                      {meta.initial}
-                    </div>
-                    {/* 회사명 */}
-                    <span className={`flex-1 text-[14px] ${isSelected ? "font-semibold text-gray-900" : "text-gray-700"}`}>
-                      {company}
-                    </span>
-                    {/* 회사 로고 */}
-                    <div className="w-28 flex items-center justify-start shrink-0">
-                      {meta.logoImg ? (
-                        <div className="flex items-center justify-center w-[100px] h-[24px] rounded bg-white shrink-0 overflow-hidden px-1">
-                          <img
-                            src={meta.logoImg}
-                            alt={company}
-                            className="w-full h-full object-contain"
-                          />
-                        </div>
-                      ) : (
-                        <span className="text-[11px] text-gray-500 border border-gray-200 rounded px-2 py-0.5 whitespace-nowrap bg-gray-50">
-                          {meta.logoLabel}
-                        </span>
-                      )}
-                    </div>
-                    {/* 선택 체크 */}
+                    <span>{company}</span>
                     {isSelected
-                      ? <Check className="h-4 w-4 text-blue-600 shrink-0" />
-                      : <span className="h-4 w-4 shrink-0" />
+                      ? <Check aria-hidden="true" className="h-4 w-4 shrink-0 text-blue-600" />
+                      : <span aria-hidden="true" className="h-4 w-4 shrink-0" />
                     }
                   </DropdownMenuItem>
                 );
               })}
             </DropdownMenuContent>
           </DropdownMenu>
+          <div
+            role="status"
+            aria-live="polite"
+            className="flex items-center gap-1 text-[11px] leading-tight text-white/90 max-sm:text-[9px] lg:gap-1.5 lg:text-[12px]"
+            data-testid="text-ordering-company"
+          >
+            <ShoppingCart aria-hidden="true" className="h-3 w-3 shrink-0 lg:h-3.5 lg:w-3.5" />
+            {isHome ? (
+              <span>주문할 회사를 선택하세요</span>
+            ) : (
+              <span>
+                <span className="font-semibold text-white text-[14px]">{selectedCompany}</span>
+                <span className="max-sm:block sm:before:content-['_']">현재 주문중</span>
+              </span>
+            )}
+          </div>
+          </div>
+
+        </div>
+
+        {/* Centered company brand, independent of the width of either control group. */}
+        {!isHome && <button
+          type="button"
+          onClick={() => openLogoEditor(selectedCompany, "header")}
+          aria-label={`${selectedCompany} 헤더 로고 편집`}
+          title="클릭하여 헤더용 흰색 PNG 로고 업로드"
+          className="absolute left-1/2 top-1/2 z-10 flex h-12 w-[120px] -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-visible px-1.5 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white max-sm:w-[96px] max-[380px]:w-[76px]"
+        >
+          {currentHeaderLogo
+            ? <img src={currentHeaderLogo} alt={`${selectedCompany} 헤더 로고`} className="max-h-10 max-w-full scale-[1.4] object-contain" />
+            : <span className="truncate text-center text-sm font-semibold text-white max-[380px]:text-xs">{selectedMeta.logoLabel}</span>}
+        </button>}
+        {editingLogo && (
+          <CompanyLogoEditor
+            company={editingLogo.company}
+            variant={editingLogo.variant}
+            standardFallback={COMPANY_META[editingLogo.company].logoImg}
+            headerFallback={COMPANY_META[editingLogo.company].headerLogoImg}
+            brandColor={COMPANY_META[editingLogo.company].hex}
+            open
+            onOpenChange={(open) => { if (!open) setEditingLogo(null); }}
+          />
+        )}
+
+        <div className="flex-1" />
+
+        {/* RIGHT */}
+        <div className="flex items-center gap-1 max-[380px]:gap-0 shrink-0">
 
           {/* 담당자 연락처 */}
           <Popover>
             <PopoverTrigger asChild>
               <button
-                className="hidden sm:flex items-center gap-1 h-8 px-2 rounded border border-white/50 bg-black/20 hover:bg-black/30 transition-colors"
+                className="hidden md:flex items-center gap-1 h-8 px-2 rounded border border-white/50 bg-black/20 hover:bg-black/30 transition-colors"
                 data-testid="button-contact"
               >
                 <Phone className="h-3 w-3 text-white" />
@@ -342,7 +304,7 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
               </button>
             </PopoverTrigger>
             <PopoverContent
-              align="start"
+              align="end"
               side="bottom"
               sideOffset={6}
               className="w-64 p-0 rounded-xl border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.15)] overflow-hidden"
@@ -385,59 +347,13 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
             </PopoverContent>
           </Popover>
 
-        </div>
-
-        {/* CENTER: search */}
-        <div className="flex-1 flex justify-center px-4">
-          <HeaderSearch onNavigate={navigate} />
-        </div>
-
-        {/* RIGHT */}
-        <div className="flex items-center gap-1 shrink-0">
-
-          {/* Balance chip */}
-          <button
-            onClick={() => navigate("/mypage")}
-            className="hidden md:flex items-center gap-1 h-7 px-2.5 rounded-full border border-white/40 bg-black/20 hover:bg-black/30 transition-colors ml-1"
-            data-testid="button-balance"
-          >
-            <Wallet className="h-3 w-3 text-white" />
-            <span className="text-[11px] font-bold text-white tracking-tight">20,370,332</span>
-            <span className="text-[10px] text-white/80">원</span>
-          </button>
-
-          <div className="h-5 w-px bg-white/40 mx-1" />
-
-          {/* Notification */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                size="icon"
-                variant="ghost"
-                className="relative h-8 w-8 text-white hover:bg-black/20"
-                data-testid="button-notifications"
-              >
-                <Bell className="h-4 w-4" />
-                {notifCount > 0 && (
-                  <>
-                    <span className="absolute top-1 right-1 h-3.5 w-3.5 rounded-full bg-red-400 opacity-40 animate-ping" />
-                    <span className="absolute top-1 right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white leading-none">
-                      {notifCount}
-                    </span>
-                  </>
-                )}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" className="text-xs">공지 알림 {notifCount}건</TooltipContent>
-          </Tooltip>
-
           {/* Cart */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 size="icon"
                 variant="ghost"
-                className="relative h-8 w-8 text-white hover:bg-black/20"
+                className="relative h-8 w-8 max-[380px]:h-7 max-[380px]:w-7 text-white hover:bg-black/20"
                 onClick={() => navigate("/")}
                 data-testid="button-cart"
               >
@@ -452,16 +368,16 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
             <TooltipContent side="bottom" className="text-xs">장바구니 {cartCount}개</TooltipContent>
           </Tooltip>
 
-          <div className="h-5 w-px bg-white/40 mx-1" />
+          <div className="h-5 w-px bg-white/40 mx-1 max-sm:hidden" />
 
           {/* User dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
-                className="flex items-center gap-2 h-8 pl-1 pr-1.5 rounded-lg hover:bg-black/20 transition-colors group"
+                className="flex items-center gap-2 max-[380px]:gap-1 h-8 pl-1 pr-1.5 max-[380px]:pr-1 rounded-lg hover:bg-black/20 transition-colors group"
                 data-testid="button-user-menu"
               >
-                <Avatar className="h-6 w-6 shrink-0">
+                <Avatar className="h-6 w-6 max-[380px]:h-5 max-[380px]:w-5 shrink-0">
                   <AvatarFallback
                     className="text-[10px] font-bold text-gray-700 bg-white"
                   >
@@ -472,7 +388,7 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
                   <span className="text-[12px] font-semibold text-white leading-none">김은영 약사</span>
                   <span className="text-[10px] text-white/80 leading-none">새봄약국</span>
                 </div>
-                <ChevronDown className="h-3 w-3 text-white/80 group-hover:text-white transition-colors" />
+                <ChevronDown className="h-3 w-3 max-[380px]:h-2.5 max-[380px]:w-2.5 text-white/80 group-hover:text-white transition-colors" />
               </button>
             </DropdownMenuTrigger>
 
@@ -572,7 +488,11 @@ export default function App() {
             <div className="flex flex-1 overflow-hidden">
               <AppSidebar selectedColor={COMPANY_META[selectedCompany]?.hex || "#2563eb"} />
               <main className="flex-1 overflow-hidden bg-gray-50">
-                <Router selectedColor={COMPANY_META[selectedCompany]?.hex || "#2563eb"} />
+                <Router
+                  selectedColor={COMPANY_META[selectedCompany]?.hex || "#2563eb"}
+                  companies={ORDER_COMPANIES}
+                  onCompanyChange={setSelectedCompany}
+                />
               </main>
             </div>
           </div>

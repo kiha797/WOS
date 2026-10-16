@@ -51,6 +51,15 @@ export const userFavorites = pgTable("user_favorites", {
   userProductPrimaryKey: primaryKey({ columns: [table.userId, table.productId] }),
 }));
 
+export const companyLogos = pgTable("company_logos", {
+  company: text("company").notNull(),
+  variant: text("variant").notNull(),
+  dataUrl: text("data_url").notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => ({
+  companyVariantPrimaryKey: primaryKey({ columns: [table.company, table.variant] }),
+}));
+
 export const insertProductSchema = createInsertSchema(products).omit({
   id: true,
 });

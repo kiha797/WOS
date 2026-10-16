@@ -293,6 +293,13 @@
   height: calc(100vh - 3rem) !important;
 }
 
+@media (max-width: 767px) {
+  [data-slot="sidebar-container"] {
+    top: 4rem !important;
+    height: calc(100dvh - 4rem) !important;
+  }
+}
+
 /* Calendar outside days color override */
 .day-outside {
   color: #cccccc !important;

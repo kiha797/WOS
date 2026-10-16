@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "YWO6PyZaBED0JqpznD6I1"
+uri = "file://docs/WOS-%EC%99%B8%EC%A3%BC%EA%B0%9C%EB%B0%9C%EC%9E%90-%EA%B0%9C%EB%B0%9C%EB%A7%A4%EB%89%B4%EC%96%BC.html"
+type = "html"
+title = "WOS 외주 개발자 개발 매뉴얼"
+description = "소스 구조, 실행 방법, 화면별 수정 위치, 실제 구현·임시 데이터 구분, API·DB, 보안, 적용 절차 및 검수 기준을 담은 14개 장의 전달용 문서입니다. 브라우저에서 열거나 인쇄하여 PDF로 저장할 수 있습니다."
+logical_id = "e0f53d4c-755e-4ea6-8d8a-a28970821b0f"
+content_hash = "sha256:ce0a489366f7aabf402f0ab9c932c734aa591540ca7de71a108710bcbf46c9ee"
+size = 28628
+mtime_ms = 1792130815886
+storage_uri = "gcs://replit-rams-assets-sisko/rams/assets/repl:9bacfc5e-4439-4854-a2b9-fef9a651702a/e0f53d4c-755e-4ea6-8d8a-a28970821b0f/281fd66a-96e8-4175-98f5-ae5a0d2f6fe0"
+storage_version_token = "1792130830918833"
+content_type = "text/html"

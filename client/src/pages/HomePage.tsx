@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Monitor } from "lucide-react";
+import { CalendarDays, ClipboardList, Monitor, Newspaper, ReceiptText, Wallet } from "lucide-react";
 import CompanyOrderCards, { type OrderCompany } from "@/components/CompanyOrderCards";
 
 const companyColors: Record<string, string> = {
@@ -62,63 +62,98 @@ export default function HomePage({ companies, onChooseCompany }: HomePageProps) 
       <div className="p-4 space-y-4">
         <CompanyOrderCards companies={companies} onChooseCompany={onChooseCompany} />
 
-        {/* Top cards row */}
-        <div className="grid grid-cols-3 gap-3">
-          {/* WOS 주문금액 */}
-          <Card className="border border-gray-200">
-            <CardContent className="p-4 flex flex-col justify-between h-28">
-              <div>
-                <div className="text-xs font-semibold text-gray-700">총 WOS 주문금액</div>
-                <div className="text-[11px] text-gray-400 mt-0.5">{orderPeriod}</div>
+        {/* Summary cards */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <Card className="overflow-hidden border border-slate-200/90 bg-gradient-to-br from-white to-sky-50/70 shadow-sm">
+            <CardContent className="flex min-h-[148px] flex-col justify-between p-5">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold tracking-tight text-slate-700">총 WOS 주문금액</div>
+                  <div className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
+                    <CalendarDays className="h-3.5 w-3.5 shrink-0 text-sky-700/70" />
+                    <span>{orderPeriod}</span>
+                  </div>
+                </div>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-800 ring-1 ring-inset ring-sky-200/70">
+                  <ReceiptText className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                </span>
               </div>
-              <div className="text-right text-lg font-bold text-gray-800">0 원</div>
+              <div className="mt-5 flex items-baseline justify-end gap-1.5 border-t border-sky-100 pt-3">
+                <span className="font-mono text-2xl font-semibold tracking-tight text-slate-900">0</span>
+                <span className="text-sm font-medium text-slate-500">원</span>
+              </div>
             </CardContent>
           </Card>
 
-          {/* 당월 잔고 */}
-          <Card className="border border-gray-200">
-            <CardContent className="p-4 flex flex-col justify-between h-28">
-              <div>
-                <div className="text-xs font-semibold text-gray-700">총 당월 잔고</div>
-                <div className="text-[11px] text-gray-400 mt-0.5">{balancePeriod}</div>
+          <Card className="overflow-hidden border border-slate-200/90 bg-gradient-to-br from-white to-teal-50/60 shadow-sm">
+            <CardContent className="flex min-h-[148px] flex-col justify-between p-5">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold tracking-tight text-slate-700">총 당월 잔고</div>
+                  <div className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
+                    <CalendarDays className="h-3.5 w-3.5 shrink-0 text-teal-700/70" />
+                    <span>{balancePeriod}</span>
+                  </div>
+                </div>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-100 text-teal-800 ring-1 ring-inset ring-teal-200/70">
+                  <Wallet className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                </span>
               </div>
-              <div className="text-right text-lg font-bold text-gray-800">0 원</div>
+              <div className="mt-5 flex items-baseline justify-end gap-1.5 border-t border-teal-100 pt-3">
+                <span className="font-mono text-2xl font-semibold tracking-tight text-slate-900">0</span>
+                <span className="text-sm font-medium text-slate-500">원</span>
+              </div>
             </CardContent>
           </Card>
 
-          {/* 스마트WOS 설정 */}
-          <Card className="border-0 bg-gray-800 cursor-pointer hover-elevate" data-testid="card-smart-wos">
-            <CardContent className="p-4 flex flex-col items-center justify-center h-28 gap-2">
-              <Monitor className="h-8 w-8 text-white/60" />
-              <span className="text-sm font-semibold text-white">스마트WOS 설정</span>
+          <Card className="overflow-hidden border border-slate-700 bg-slate-800 text-white shadow-sm sm:col-span-2 xl:col-span-1" data-testid="card-smart-wos">
+            <CardContent className="flex min-h-[148px] items-center justify-between gap-5 p-5">
+              <div className="min-w-0">
+                <div className="text-sm font-semibold tracking-tight text-white">스마트WOS 설정</div>
+                <div className="mt-1.5 text-xs text-slate-300">WOS 운영 설정</div>
+              </div>
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-sky-100">
+                <Monitor className="h-5 w-5" strokeWidth={1.8} />
+              </span>
             </CardContent>
           </Card>
         </div>
 
         {/* 업체별 최신공지 */}
-        <Card className="border border-gray-200">
+        <Card className="overflow-hidden border border-slate-200/90 bg-gradient-to-br from-white to-sky-50/50 shadow-sm">
           <CardContent className="p-0">
-            <div className="px-4 py-2.5 border-b">
-              <span className="text-sm font-semibold text-gray-800">업체별 최신공지</span>
+            <div className="flex items-center justify-between gap-4 border-b border-slate-200/80 px-4 py-3.5 sm:px-5">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-800 ring-1 ring-inset ring-sky-200/70">
+                  <Newspaper className="h-[17px] w-[17px]" strokeWidth={1.8} />
+                </span>
+                <div className="min-w-0">
+                  <h2 className="text-sm font-semibold tracking-tight text-slate-800">업체별 최신공지</h2>
+                  <p className="mt-0.5 text-xs text-slate-500">거래처에서 전한 최근 안내</p>
+                </div>
+              </div>
+              <span className="shrink-0 rounded-full border border-slate-200 bg-white/80 px-2.5 py-1 font-mono text-[11px] font-medium text-slate-500">
+                {notices.length}건
+              </span>
             </div>
-            <div className="divide-y">
+            <div className="divide-y divide-slate-100 px-3 sm:px-4">
               {notices.map((n, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3 px-4 py-2.5 hover-elevate cursor-pointer"
+                  className="flex items-start gap-3 py-3.5 sm:items-center sm:gap-4 sm:py-3"
                   data-testid={`notice-item-${i}`}
                 >
                   <span
-                    className={`flex items-center justify-center w-6 h-6 rounded-full text-[11px] font-bold text-white shrink-0 ${companyColors[n.company] ?? "bg-gray-400"}`}
+                    className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white shadow-sm ring-1 ring-inset ring-white/20 sm:mt-0 ${companyColors[n.company] ?? "bg-slate-400"}`}
                   >
                     {companyShort[n.company]}
                   </span>
-                  <div className="flex flex-col min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-gray-700 shrink-0">{n.company}</span>
-                      <span className="text-xs text-gray-600 truncate">{n.title}</span>
+                  <div className="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
+                    <div className="min-w-0">
+                      <div className="text-xs font-semibold tracking-tight text-slate-700">{n.company}</div>
+                      <div className="mt-1 break-keep text-[13px] leading-5 text-slate-600">{n.title}</div>
                     </div>
-                    <span className="text-[11px] text-gray-400">{n.date}</span>
+                    <time className="shrink-0 font-mono text-[11px] tracking-tight text-slate-400 sm:text-right">{n.date}</time>
                   </div>
                 </div>
               ))}
@@ -126,61 +161,90 @@ export default function HomePage({ companies, onChooseCompany }: HomePageProps) 
           </CardContent>
         </Card>
 
-        {/* Bottom: two tables */}
-        <div className="grid grid-cols-2 gap-3">
+        {/* Bottom: two financial tables */}
+        <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
           {/* 업체별 주문 금액 */}
-          <Card className="border border-gray-200">
+          <Card className="min-w-0 overflow-hidden border border-slate-200/90 bg-gradient-to-br from-white to-sky-50/40 shadow-sm">
             <CardContent className="p-0">
-              <div className="px-4 py-2.5 border-b flex items-center gap-2">
-                <span className="text-sm font-semibold text-gray-800">업체별 주문 금액</span>
-                <span className="text-[11px] text-gray-400">{orderPeriod}</span>
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/80 px-4 py-3.5 sm:px-5">
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-800 ring-1 ring-inset ring-sky-200/70">
+                    <ClipboardList className="h-[17px] w-[17px]" strokeWidth={1.8} />
+                  </span>
+                  <div className="min-w-0">
+                    <h2 className="text-sm font-semibold tracking-tight text-slate-800">업체별 주문 금액</h2>
+                    <p className="mt-0.5 text-xs text-slate-500">업체별 주문 현황</p>
+                  </div>
+                </div>
+                <span className="shrink-0 rounded-full border border-slate-200 bg-white/80 px-2.5 py-1 font-mono text-[10px] tracking-tight text-slate-500 sm:text-[11px]">
+                  {orderPeriod}
+                </span>
               </div>
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="bg-gray-50 border-b">
-                    <th className="py-2 px-4 text-left font-medium text-gray-600">법인명</th>
-                    <th className="py-2 px-4 text-right font-medium text-gray-600">주문(승인)금액</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y">
-                  {orderData.map((row, i) => (
-                    <tr key={i} className="hover:bg-gray-50">
-                      <td className="py-2 px-4 text-gray-700">{row.name}</td>
-                      <td className="py-2 px-4 text-right text-gray-700">{row.amount.toLocaleString()}</td>
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <caption className="sr-only">업체별 주문 금액, {orderPeriod}</caption>
+                  <thead>
+                    <tr className="border-b border-slate-100 bg-slate-50/80">
+                      <th scope="col" className="px-4 py-2.5 text-left font-semibold text-slate-500 sm:px-5">법인명</th>
+                      <th scope="col" className="px-4 py-2.5 text-right font-semibold text-slate-500 sm:px-5">주문(승인)금액</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {orderData.map((row, i) => (
+                      <tr key={i} className={i % 2 === 1 ? "bg-slate-50/35" : "bg-white/60"}>
+                        <th scope="row" className="whitespace-nowrap px-4 py-3 text-left font-medium text-slate-700 sm:px-5">{row.name}</th>
+                        <td className="whitespace-nowrap px-4 py-3 text-right font-mono tabular-nums text-slate-700 sm:px-5">{row.amount.toLocaleString()}<span className="ml-1 text-slate-400">원</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </CardContent>
           </Card>
 
           {/* 업체별 결제잔액 */}
-          <Card className="border border-gray-200">
+          <Card className="min-w-0 overflow-hidden border border-slate-200/90 bg-gradient-to-br from-white to-teal-50/35 shadow-sm">
             <CardContent className="p-0">
-              <div className="px-4 py-2.5 border-b flex items-center gap-2">
-                <span className="text-sm font-semibold text-gray-800">업체별 결제잔액</span>
-                <span className="text-[11px] text-gray-400">{orderPeriod}</span>
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/80 px-4 py-3.5 sm:px-5">
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-100 text-teal-800 ring-1 ring-inset ring-teal-200/70">
+                    <Wallet className="h-[17px] w-[17px]" strokeWidth={1.8} />
+                  </span>
+                  <div className="min-w-0">
+                    <h2 className="text-sm font-semibold tracking-tight text-slate-800">업체별 결제잔액</h2>
+                    <p className="mt-0.5 text-xs text-slate-500">전월 이월 및 당월 거래</p>
+                  </div>
+                </div>
+                <span className="shrink-0 rounded-full border border-slate-200 bg-white/80 px-2.5 py-1 font-mono text-[10px] tracking-tight text-slate-500 sm:text-[11px]">
+                  {orderPeriod}
+                </span>
               </div>
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="bg-gray-50 border-b">
-                    <th className="py-2 px-4 text-left font-medium text-gray-600">법인명</th>
-                    <th className="py-2 px-4 text-right font-medium text-gray-600">전월잔고</th>
-                    <th className="py-2 px-4 text-right font-medium text-gray-600">거래금액</th>
-                    <th className="py-2 px-4 text-right font-medium text-gray-600">당월잔고</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y">
-                  {balanceData.map((row, i) => (
-                    <tr key={i} className="hover:bg-gray-50">
-                      <td className="py-2 px-4 text-gray-700">{row.name}</td>
-                      <td className="py-2 px-4 text-right text-gray-700">{row.prevBalance.toLocaleString()}</td>
-                      <td className="py-2 px-4 text-right text-gray-700">{row.transaction.toLocaleString()}</td>
-                      <td className="py-2 px-4 text-right text-gray-700">{row.currBalance.toLocaleString()}</td>
+              <div className="max-w-full overflow-x-auto">
+                <table className="w-full min-w-[440px] text-xs">
+                  <caption className="sr-only">업체별 결제잔액, {orderPeriod}</caption>
+                  <thead>
+                    <tr className="border-b border-slate-100 bg-slate-50/80">
+                      <th scope="col" className="px-4 py-2.5 text-left font-semibold text-slate-500 sm:px-5">법인명</th>
+                      <th scope="col" className="px-4 py-2.5 text-right font-semibold text-slate-500">전월잔고</th>
+                      <th scope="col" className="px-4 py-2.5 text-right font-semibold text-slate-500">거래금액</th>
+                      <th scope="col" className="px-4 py-2.5 text-right font-semibold text-slate-500 sm:px-5">당월잔고</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {balanceData.map((row, i) => (
+                      <tr key={i} className={i % 2 === 1 ? "bg-slate-50/35" : "bg-white/60"}>
+                        <th scope="row" className="whitespace-nowrap px-4 py-3 text-left font-medium text-slate-700 sm:px-5">{row.name}</th>
+                        <td className="whitespace-nowrap px-4 py-3 text-right font-mono tabular-nums text-slate-600">{row.prevBalance.toLocaleString()}</td>
+                        <td className="whitespace-nowrap px-4 py-3 text-right font-mono tabular-nums text-slate-600">{row.transaction.toLocaleString()}</td>
+                        <td className="whitespace-nowrap px-4 py-3 text-right font-mono font-semibold tabular-nums text-slate-800 sm:px-5">{row.currBalance.toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="border-t border-slate-100 px-4 py-2 text-[10px] text-slate-400 sm:hidden">
+                표를 좌우로 밀어 전체 금액을 확인하세요.
+              </p>
             </CardContent>
           </Card>
         </div>

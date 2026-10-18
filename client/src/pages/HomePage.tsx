@@ -58,7 +58,7 @@ interface HomePageProps {
 
 export default function HomePage({ companies, onChooseCompany }: HomePageProps) {
   return (
-    <div className="flex flex-col h-full overflow-y-auto bg-gray-50">
+    <div className="wos-home flex flex-col h-full overflow-y-auto bg-gray-50">
       <div className="p-4 space-y-4">
         <CompanyOrderCards companies={companies} onChooseCompany={onChooseCompany} />
 

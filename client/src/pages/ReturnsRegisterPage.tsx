@@ -50,7 +50,7 @@ export default function ReturnsRegisterPage() {
   ];
 
   return (
-    <div className="h-full overflow-auto p-4">
+    <div className="wos-page h-full overflow-auto p-4">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-lg font-semibold" data-testid="text-page-title">반품등록</h1>
         <div className="flex items-center gap-2 text-sm text-gray-600">

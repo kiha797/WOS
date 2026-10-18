@@ -438,11 +438,11 @@ export default function OrderPage({ selectedColor }: { selectedColor?: string })
   };
 
   return (
-    <div className="h-full flex gap-3 p-3 overflow-hidden bg-[#e6e6e6]">
+    <div className="wos-order-workspace h-full flex gap-3 p-3 overflow-hidden bg-[#e6e6e6]">
       {/* 왼쪽 영역: 제품목록 (상단) + 장바구니 (하단) */}
       <div ref={leftColumnRef} className="flex-1 flex flex-col gap-3 overflow-hidden">
         {/* 제품품목 */}
-        <Card className="rounded-sm flex flex-col overflow-hidden flex-1 bg-[#ffffff]" style={{ borderColor: '#ededed', borderWidth: '2px' }}>
+        <Card className="rounded-xl flex flex-col overflow-hidden flex-1 bg-[#ffffff]">
         <CardHeader className="pb-2 pt-3 px-3 border-b flex flex-row items-center justify-between space-y-0 gap-2">
           <CardTitle className="text-[18px] font-extrabold">제품품목<span className="text-[10px] font-normal text-gray-500 ml-1.5">총 {mockProducts.length} 개 상품</span></CardTitle>
           {favoriteLoadState === "error" && (

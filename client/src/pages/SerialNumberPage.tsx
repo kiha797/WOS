@@ -533,7 +533,7 @@ export default function SerialNumberPage() {
   };
 
   return (
-    <div className="h-full overflow-auto p-4">
+    <div className="wos-page h-full overflow-auto p-4">
       {/* Page header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">

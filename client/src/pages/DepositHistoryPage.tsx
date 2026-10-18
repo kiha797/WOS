@@ -69,7 +69,7 @@ export default function DepositHistoryPage() {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto bg-gray-50">
+    <div className="wos-page flex flex-col h-full overflow-y-auto bg-gray-50">
       <div className="p-4 space-y-3">
         {/* Page header */}
         <div className="flex items-baseline gap-3">

@@ -63,7 +63,7 @@ export default function MyPage() {
   );
 
   return (
-    <div className="h-full overflow-auto p-5">
+    <div className="wos-page h-full overflow-auto p-5">
       {/* Welcome */}
       <p className="text-sm text-gray-700 mb-4" data-testid="text-welcome">
         새봄약국(김은영)님 환영합니다.

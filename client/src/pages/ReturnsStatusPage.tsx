@@ -156,7 +156,7 @@ export default function ReturnsStatusPage() {
   ];
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
+    <div className="wos-page h-full flex flex-col bg-gray-50">
       {/* 헤더 */}
       <div className="flex items-center justify-between px-4 py-3 bg-white border-b">
         <h1 className="text-lg font-bold" data-testid="text-page-title">반품현황</h1>

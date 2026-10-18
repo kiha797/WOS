@@ -129,7 +129,7 @@ export default function PriceReductionPage() {
   });
 
   return (
-    <div className="h-full overflow-auto p-4">
+    <div className="wos-page h-full overflow-auto p-4">
       <div className="flex items-center justify-between mb-3">
         <h1 className="text-xl font-bold" data-testid="text-page-title">약가인하상품</h1>
         <div className="flex items-center gap-3">

@@ -186,7 +186,7 @@ export default function TaxInvoicePage() {
   };
 
   return (
-    <div className="h-full overflow-auto p-6">
+    <div className="wos-page h-full overflow-auto p-6">
       <h1 className="text-xl font-bold mb-5" data-testid="text-page-title">세금계산서</h1>
 
       {/* Search bar */}

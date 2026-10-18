@@ -268,7 +268,7 @@ export default function RecalledMedicinesPage() {
   };
 
   return (
-    <div className="flex flex-col h-full p-4 gap-3 overflow-auto">
+    <div className="wos-page flex flex-col h-full p-4 gap-3 overflow-auto">
       <div className="flex items-center justify-between">
         <h1 className="text-[20px] font-extrabold" data-testid="text-page-title">회수품목내용</h1>
         <div className="flex items-center gap-1 text-xs text-gray-600">

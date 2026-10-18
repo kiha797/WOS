@@ -1,0 +1,308 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --wos-ink: 213 34% 19%;
+  --wos-muted: 213 13% 46%;
+  --wos-canvas: 210 30% 97%;
+  --wos-surface: 0 0% 100%;
+  --wos-line: 212 24% 89%;
+  --wos-accent: 194 62% 35%;
+  --wos-accent-soft: 190 45% 94%;
+  --background: var(--wos-canvas);
+  --foreground: var(--wos-ink);
+  --card: var(--wos-surface);
+  --card-foreground: var(--wos-ink);
+  --card-border: var(--wos-line);
+  --border: var(--wos-line);
+  --input: 212 22% 82%;
+  --primary: var(--wos-accent);
+  --primary-foreground: 0 0% 100%;
+  --secondary: 207 25% 94%;
+  --secondary-foreground: var(--wos-ink);
+  --muted: 207 25% 94%;
+  --muted-foreground: var(--wos-muted);
+  --accent: var(--wos-accent-soft);
+  --accent-foreground: var(--wos-ink);
+  --ring: var(--wos-accent);
+  --sidebar: 208 38% 98%;
+  --sidebar-foreground: var(--wos-ink);
+  --sidebar-border: var(--wos-line);
+  --sidebar-accent: var(--wos-accent-soft);
+  --sidebar-accent-foreground: var(--wos-ink);
+  --sidebar-primary: var(--wos-accent);
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-ring: var(--wos-accent);
+  --font-sans: "DM Sans", "Noto Sans KR", sans-serif;
+  --font-mono: "DM Sans", ui-monospace, monospace;
+  --radius: 0.7rem;
+}
+
+.dark {
+  --background: 213 29% 12%;
+  --foreground: 210 25% 92%;
+  --card: 213 25% 15%;
+  --card-foreground: 210 25% 92%;
+  --card-border: 213 18% 25%;
+  --border: 213 18% 25%;
+  --input: 213 18% 30%;
+  --primary: 190 52% 54%;
+  --primary-foreground: 213 29% 12%;
+  --secondary: 213 20% 20%;
+  --secondary-foreground: 210 25% 92%;
+  --muted: 213 20% 20%;
+  --muted-foreground: 210 14% 66%;
+  --accent: 190 30% 23%;
+  --accent-foreground: 210 25% 92%;
+  --ring: 190 52% 54%;
+  --sidebar: 213 25% 15%;
+  --sidebar-foreground: 210 25% 92%;
+  --sidebar-border: 213 18% 25%;
+  --sidebar-accent: 190 30% 23%;
+  --sidebar-accent-foreground: 210 25% 92%;
+  --sidebar-primary: 190 52% 54%;
+  --sidebar-primary-foreground: 213 29% 12%;
+  --sidebar-ring: 190 52% 54%;
+}
+
+  body {
+    font-family: "DM Sans", "Noto Sans KR", sans-serif;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-size: 14px;
+    letter-spacing: -0.012em;
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--wos-accent) / 0.75);
+    outline-offset: 2px;
+  }
+
+[data-testid="header-main"] {
+  box-shadow: 0 2px 14px hsl(213 34% 12% / 0.12);
+}
+
+[data-testid="header-main"] > div:first-child {
+  min-height: 64px;
+}
+
+[data-testid="button-company-select"],
+[data-testid="button-contact"] {
+  border-color: rgb(255 255 255 / 0.26);
+  border-radius: 0.55rem;
+  background: rgb(14 28 43 / 0.16);
+}
+
+[data-testid="button-company-select"]:hover,
+[data-testid="button-contact"]:hover {
+  background: rgb(14 28 43 / 0.28);
+}
+
+main {
+  background: hsl(var(--wos-canvas));
+  min-width: 0;
+}
+
+main .shadcn-card {
+  border-color: hsl(var(--wos-line));
+  border-radius: 0.8rem;
+  box-shadow: 0 1px 3px hsl(213 32% 20% / 0.045), 0 8px 22px hsl(213 32% 20% / 0.025);
+}
+
+main .shadcn-card > [class*="border-b"] {
+  border-color: hsl(var(--wos-line));
+}
+
+main table thead {
+  color: hsl(213 18% 39%);
+}
+
+main input:not([type="checkbox"]):not([type="radio"]),
+main [data-slot="select-trigger"] {
+  border-color: hsl(212 22% 82%);
+  border-radius: 0.5rem;
+  background-color: hsl(var(--wos-surface));
+}
+
+main input:not([type="checkbox"]):not([type="radio"]):focus-visible,
+main [data-slot="select-trigger"]:focus-visible {
+  border-color: hsl(var(--wos-accent));
+  box-shadow: 0 0 0 3px hsl(var(--wos-accent) / 0.12);
+}
+
+main button:not([data-slot="sidebar-menu-button"]):not([data-slot="sidebar-menu-sub-button"]) {
+  border-radius: 0.5rem;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+[data-slot="sidebar-container"] {
+  border-right: 1px solid hsl(var(--wos-line));
+  box-shadow: 5px 0 18px hsl(213 30% 24% / 0.035);
+}
+
+[data-slot="sidebar-content"] {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(212 18% 78%) transparent;
+}
+
+[data-slot="sidebar-menu-button"],
+[data-slot="sidebar-menu-sub-button"] {
+  border-radius: 0.55rem;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+[data-slot="sidebar-menu-button"] {
+  min-height: 2.55rem;
+  font-size: 0.875rem;
+  font-weight: 550;
+}
+
+[data-slot="sidebar-menu-sub-button"] {
+  min-height: 2.3rem;
+  font-size: 0.8125rem;
+  color: hsl(213 14% 43%);
+}
+
+[data-slot="sidebar-menu-button"][data-active="true"],
+[data-slot="sidebar-menu-sub-button"][data-active="true"] {
+  color: hsl(var(--wos-accent));
+  background: hsl(var(--wos-accent-soft));
+  font-weight: 650;
+}
+
+[data-slot="sidebar-menu-button"][style] {
+  color: white;
+}
+
+.wos-home {
+  background:
+    radial-gradient(ellipse at 92% 2%, hsl(190 35% 91% / 0.42), transparent 34rem),
+    hsl(var(--wos-canvas));
+}
+
+.wos-home > div {
+  width: 100%;
+  max-width: 1680px;
+  margin-inline: auto;
+  padding: clamp(1rem, 2vw, 1.75rem);
+}
+
+.wos-home [data-testid^="button-order-company-"] {
+  border-color: hsl(212 24% 88%);
+  border-radius: 0.85rem;
+  background: hsl(0 0% 100% / 0.92);
+  box-shadow: 0 2px 8px hsl(213 32% 20% / 0.045);
+}
+
+.wos-home [data-testid^="button-order-company-"]:hover {
+  box-shadow: 0 12px 26px hsl(213 32% 20% / 0.1);
+}
+
+.wos-order-workspace {
+  background: hsl(208 25% 94%);
+  gap: 0.75rem;
+  padding: 0.75rem;
+}
+
+.wos-order-workspace > div {
+  min-width: 0;
+}
+
+.wos-order-workspace .shadcn-card {
+  border-radius: 0.8rem;
+  border: 1px solid hsl(var(--wos-line));
+  box-shadow: 0 2px 9px hsl(213 30% 24% / 0.055);
+}
+
+.wos-order-workspace .shadcn-card > div:first-child {
+  min-height: 54px;
+  padding: 0.75rem 1rem;
+}
+
+.wos-order-workspace table thead {
+  background: hsl(207 30% 95%);
+}
+
+.wos-order-workspace table tbody tr:hover {
+  background: hsl(var(--wos-accent-soft));
+}
+
+.wos-order-workspace table tbody tr {
+  border-color: hsl(212 22% 92%);
+}
+
+.wos-order-workspace [data-testid="input-product-name"],
+.wos-order-workspace [data-testid="input-manufacturer"] {
+  min-height: 2.35rem;
+}
+
+.wos-page {
+  background: hsl(var(--wos-canvas));
+  color: hsl(var(--wos-ink));
+}
+
+.wos-page [data-testid="text-page-title"] {
+  letter-spacing: -0.035em;
+  color: hsl(var(--wos-ink));
+}
+
+.wos-page table thead tr {
+  background-color: hsl(207 30% 95%);
+}
+
+.wos-page table th {
+  font-weight: 650;
+}
+
+@media (max-width: 767px) {
+  .wos-order-workspace {
+    overflow-y: auto;
+    flex-direction: column;
+    padding: 0.65rem;
+  }
+
+  .wos-order-workspace > div {
+    width: 100%;
+    min-height: 58rem;
+    flex: none;
+  }
+
+  .wos-order-workspace .shadcn-card > div:first-child {
+    flex-wrap: wrap;
+  }
+
+  .wos-order-workspace .shadcn-card > div:first-child > h3 {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .wos-order-workspace .shadcn-card > div:first-child > .flex {
+    flex-wrap: wrap;
+  }
+
+  .wos-order-workspace .shadcn-card > .border-b > .flex {
+    flex-wrap: wrap;
+  }
+
+  .wos-order-workspace [data-testid="input-product-name"] {
+    min-width: 10rem;
+  }
+
+  .wos-order-workspace table {
+    min-width: 38rem;
+  }
+
+  .wos-home > div {
+    padding: 0.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

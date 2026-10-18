@@ -167,7 +167,7 @@ export default function OnlineOrdersPage() {
   }, []);
 
   return (
-    <div className="h-full overflow-auto bg-white">
+    <div className="wos-page h-full overflow-auto bg-white">
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-4" data-testid="text-page-title">주문내역 조회</h1>
 

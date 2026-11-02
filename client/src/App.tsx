@@ -292,24 +292,19 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
         <div className={`flex items-center gap-1 max-[380px]:gap-0 shrink-0 ${isHome ? "max-md:ml-auto max-md:justify-end" : ""}`}>
 
           {isHome ? (
-            footerItems.filter((item) => item.external).map((item, index) => {
-              const tint = index === 0
-                ? "border-sky-200/90 bg-sky-50 text-sky-900 hover:bg-sky-100"
-                : "border-amber-200/90 bg-amber-50 text-amber-900 hover:bg-amber-100";
-              return (
-                <a
-                  key={item.title}
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border px-2 text-[11px] font-semibold shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${tint}`}
-                  data-testid={`header-link-${item.title}`}
-                >
-                  <item.icon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
-                  <span>{item.title}</span>
-                </a>
-              );
-            })
+            footerItems.filter((item) => item.external).map((item) => (
+              <a
+                key={item.title}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-white/35 bg-white/10 px-2 text-[11px] font-semibold text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+                data-testid={`header-link-${item.title}`}
+              >
+                <item.icon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
+                <span>{item.title}</span>
+              </a>
+            ))
           ) : (
             <Popover>
               <PopoverTrigger asChild>

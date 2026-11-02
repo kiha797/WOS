@@ -227,7 +227,11 @@ function AppHeader({ selectedCompany, onCompanyChange, companyNames }: { selecte
                     key={company}
                     role="menuitemradio"
                     aria-checked={isSelected}
-                    onSelect={() => onCompanyChange(company)}
+                    onSelect={() => {
+                      onCompanyChange(company);
+                      setCompanyMenuOpen(false);
+                      navigate("/order");
+                    }}
                     className={`flex min-h-11 w-full items-center justify-between rounded-lg px-3 py-2.5 text-[14px] cursor-pointer focus:bg-blue-50 focus:text-gray-900 ${
                       isSelected
                         ? "bg-blue-50/70 font-semibold text-gray-900"

@@ -50,6 +50,7 @@ import {
 } from "lucide-react";
 import { COMPANY_NAMES } from "@shared/company-branding";
 import type { OrderCompany } from "@/components/CompanyOrderCards";
+import { useCompanyOrder, type CompanyOrderState } from "@/components/use-company-order";
 import { useState } from "react";
 import HomePage from "@/pages/HomePage";
 import OrderPage from "@/pages/OrderPage";
@@ -74,10 +75,12 @@ function Router({
   selectedColor,
   companies,
   onCompanyChange,
+  companyOrder,
 }: {
   selectedColor?: string;
   companies: OrderCompany[];
   onCompanyChange: (company: string) => void;
+  companyOrder: CompanyOrderState;
 }) {
   const [, navigate] = useLocation();
   const chooseCompany = (company: string) => {
@@ -88,7 +91,7 @@ function Router({
   return (
     <Switch>
       <Route path="/">
-        {() => <HomePage companies={companies} onChooseCompany={chooseCompany} />}
+        {() => <HomePage companies={companies} onChooseCompany={chooseCompany} companyOrder={companyOrder} />}
       </Route>
       <Route path="/order">
         {() => <OrderPage selectedColor={selectedColor} />}
@@ -143,7 +146,7 @@ const ORDER_COMPANIES: OrderCompany[] = COMPANIES.map((name) => ({
   logoLabel: COMPANY_META[name].logoLabel,
 }));
 
-function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: string; onCompanyChange: (company: string) => void }) {
+function AppHeader({ selectedCompany, onCompanyChange, companyNames }: { selectedCompany: string; onCompanyChange: (company: string) => void; companyNames: string[] }) {
   const { toggleSidebar } = useSidebar();
   const [location, navigate] = useLocation();
   const isHome = location === "/";
@@ -217,7 +220,7 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
               <DropdownMenuLabel className="px-3 py-2 text-[11px] font-medium text-gray-500">
                 주문회사 선택
               </DropdownMenuLabel>
-              {COMPANIES.map((company) => {
+              {companyNames.map((company) => {
                 const isSelected = selectedCompany === company;
                 return (
                   <DropdownMenuItem
@@ -489,6 +492,7 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
 
 export default function App() {
   const [selectedCompany, setSelectedCompany] = useState("동원약품");
+  const companyOrder = useCompanyOrder(ORDER_COMPANIES);
   const [location] = useLocation();
   const style = {
     "--sidebar-width": "16rem",
@@ -500,13 +504,18 @@ export default function App() {
       <TooltipProvider>
         <SidebarProvider style={style as React.CSSProperties}>
           <div className="flex flex-col h-screen w-full">
-            <AppHeader selectedCompany={selectedCompany} onCompanyChange={setSelectedCompany} />
+            <AppHeader
+              selectedCompany={selectedCompany}
+              onCompanyChange={setSelectedCompany}
+              companyNames={companyOrder.orderedCompanies.map((company) => company.name)}
+            />
             <div className="flex flex-1 overflow-hidden">
               {location !== "/" && <AppSidebar selectedColor={COMPANY_META[selectedCompany]?.hex || "#2563eb"} />}
               <main className="flex-1 overflow-hidden bg-gray-50">
                 <Router
                   selectedColor={COMPANY_META[selectedCompany]?.hex || "#2563eb"}
                   companies={ORDER_COMPANIES}
+                  companyOrder={companyOrder}
                   onCompanyChange={setSelectedCompany}
                 />
               </main>

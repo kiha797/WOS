@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { CalendarDays, ClipboardList, Monitor, Newspaper, ReceiptText, Wallet } from "lucide-react";
 import CompanyOrderCards, { type OrderCompany } from "@/components/CompanyOrderCards";
+import type { CompanyOrderState } from "@/components/use-company-order";
 
 const companyColors: Record<string, string> = {
   "동원약품":   "bg-blue-500",
@@ -54,15 +55,17 @@ const balancePeriod = fmt(today);
 interface HomePageProps {
   companies: OrderCompany[];
   onChooseCompany: (company: string) => void;
+  companyOrder: CompanyOrderState;
 }
 
-export default function HomePage({ companies, onChooseCompany }: HomePageProps) {
+export default function HomePage({ companies, onChooseCompany, companyOrder }: HomePageProps) {
   return (
     <div className="wos-home flex flex-col h-full overflow-y-auto bg-gray-50">
       <div className="p-4 space-y-4">
         <CompanyOrderCards
           companies={companies}
           onChooseCompany={onChooseCompany}
+          companyOrder={companyOrder}
         />
 
         {/* Summary cards */}

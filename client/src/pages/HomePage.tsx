@@ -1,8 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { CalendarDays, ClipboardList, Monitor, Newspaper, ReceiptText, Wallet } from "lucide-react";
 import CompanyOrderCards, { type OrderCompany } from "@/components/CompanyOrderCards";
-import { footerItems } from "@/components/app-sidebar";
-import { Link } from "wouter";
 
 const companyColors: Record<string, string> = {
   "동원약품":   "bg-blue-500",
@@ -65,41 +63,6 @@ export default function HomePage({ companies, onChooseCompany }: HomePageProps) 
         <CompanyOrderCards
           companies={companies}
           onChooseCompany={onChooseCompany}
-          headingActions={
-            <nav
-              aria-label="빠른 지원 링크"
-              className="flex w-full flex-wrap items-center justify-start gap-2 sm:w-auto sm:justify-end"
-            >
-              {footerItems.map((item, index) => {
-                const tint = index === 0
-                  ? "border-sky-200 bg-sky-50/80 text-sky-800 hover:border-sky-300 hover:bg-sky-100"
-                  : "border-amber-200 bg-amber-50/80 text-amber-800 hover:border-amber-300 hover:bg-amber-100";
-                const className = `inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold shadow-[0_1px_2px_rgba(23,37,56,0.04)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-700 focus-visible:ring-offset-2 ${tint}`;
-
-                return item.external ? (
-                  <a
-                    key={item.title}
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={className}
-                  >
-                    <item.icon aria-hidden="true" className="h-4 w-4 shrink-0" />
-                    <span>{item.title}</span>
-                  </a>
-                ) : (
-                  <Link
-                    key={item.title}
-                    href={item.url}
-                    className={className}
-                  >
-                    <item.icon aria-hidden="true" className="h-4 w-4 shrink-0" />
-                    <span>{item.title}</span>
-                  </Link>
-                );
-              })}
-            </nav>
-          }
         />
 
         {/* Summary cards */}

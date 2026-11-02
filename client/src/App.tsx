@@ -10,7 +10,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar, footerItems } from "@/components/app-sidebar";
 import { CompanyLogoEditor } from "@/components/CompanyLogoEditor";
 import { useCompanyLogos } from "@/hooks/use-company-logos";
 import { Button } from "@/components/ui/button";
@@ -172,7 +172,7 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
       data-testid="header-main"
     >
       {/* ── Main nav bar ── */}
-      <div className="relative flex items-center h-[64px] px-2 gap-1 sm:px-3 sm:gap-3">
+      <div className={`relative flex items-center px-2 gap-1 sm:px-3 sm:gap-3 ${isHome ? "min-h-[64px] max-md:flex-wrap max-md:gap-y-2 max-md:py-2 md:h-[64px]" : "h-[64px]"}`}>
 
         {/* LEFT */}
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
@@ -289,63 +289,83 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
         <div className="flex-1" />
 
         {/* RIGHT */}
-        <div className="flex items-center gap-1 max-[380px]:gap-0 shrink-0">
+        <div className={`flex items-center gap-1 max-[380px]:gap-0 shrink-0 ${isHome ? "max-md:ml-auto max-md:justify-end" : ""}`}>
 
-          {/* 담당자 연락처 */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <button
-                className="hidden md:flex items-center gap-1 h-8 px-2 rounded border border-white/50 bg-black/20 hover:bg-black/30 transition-colors"
-                data-testid="button-contact"
+          {isHome ? (
+            footerItems.filter((item) => item.external).map((item, index) => {
+              const tint = index === 0
+                ? "border-sky-200/90 bg-sky-50 text-sky-900 hover:bg-sky-100"
+                : "border-amber-200/90 bg-amber-50 text-amber-900 hover:bg-amber-100";
+              return (
+                <a
+                  key={item.title}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border px-2 text-[11px] font-semibold shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${tint}`}
+                  data-testid={`header-link-${item.title}`}
+                >
+                  <item.icon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
+                  <span>{item.title}</span>
+                </a>
+              );
+            })
+          ) : (
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  className="hidden md:flex items-center gap-1 h-8 px-2 rounded border border-white/50 bg-black/20 hover:bg-black/30 transition-colors"
+                  data-testid="button-contact"
+                >
+                  <Phone className="h-3 w-3 text-white" />
+                  <span className="text-[11px] text-white font-medium">담당자</span>
+                  <ChevronDown className="h-2.5 w-2.5 text-white" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent
+                align="end"
+                side="bottom"
+                sideOffset={6}
+                className="w-64 p-0 rounded-xl border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.15)] overflow-hidden"
               >
-                <Phone className="h-3 w-3 text-white" />
-                <span className="text-[11px] text-white font-medium">담당자</span>
-                <ChevronDown className="h-2.5 w-2.5 text-white" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent
-              align="end"
-              side="bottom"
-              sideOffset={6}
-              className="w-64 p-0 rounded-xl border border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.15)] overflow-hidden"
-            >
-              <div className="px-3 py-2 border-b border-gray-100" style={{ background: "linear-gradient(135deg,#1e40af,#2563eb)" }}>
-                <span className="text-[11px] font-semibold text-white/90">담당자 연락처</span>
-              </div>
-              <div className="p-2 flex flex-col gap-1">
-                <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover-elevate">
-                  <div className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-50 shrink-0">
-                    <Building2 className="h-3.5 w-3.5 text-blue-500" />
+                <div className="px-3 py-2 border-b border-gray-100" style={{ background: "linear-gradient(135deg,#1e40af,#2563eb)" }}>
+                  <span className="text-[11px] font-semibold text-white/90">담당자 연락처</span>
+                </div>
+                <div className="p-2 flex flex-col gap-1">
+                  <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover-elevate">
+                    <div className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-50 shrink-0">
+                      <Building2 className="h-3.5 w-3.5 text-blue-500" />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-[12px] font-semibold text-gray-800">(주)동원약품</span>
+                      <a
+                        href="tel:053-381-5555"
+                        className="text-[12px] text-blue-600 font-medium hover:text-blue-700 transition-colors"
+                        data-testid="link-company-phone"
+                      >
+                        053-381-5555
+                      </a>
+                    </div>
                   </div>
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-[12px] font-semibold text-gray-800">(주)동원약품</span>
-                    <a
-                      href="tel:053-381-5555"
-                      className="text-[12px] text-blue-600 font-medium hover:text-blue-700 transition-colors"
-                      data-testid="link-company-phone"
-                    >
-                      053-381-5555
-                    </a>
+                  <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover-elevate">
+                    <div className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-50 shrink-0">
+                      <UserCircle2 className="h-3.5 w-3.5 text-blue-500" />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-[12px] font-semibold text-gray-800">최상섭</span>
+                      <a
+                        href="tel:010-2667-4100"
+                        className="text-[12px] text-blue-600 font-medium hover:text-blue-700 transition-colors"
+                        data-testid="link-manager-phone"
+                      >
+                        010-2667-4100
+                      </a>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover-elevate">
-                  <div className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-50 shrink-0">
-                    <UserCircle2 className="h-3.5 w-3.5 text-blue-500" />
-                  </div>
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-[12px] font-semibold text-gray-800">최상섭</span>
-                    <a
-                      href="tel:010-2667-4100"
-                      className="text-[12px] text-blue-600 font-medium hover:text-blue-700 transition-colors"
-                      data-testid="link-manager-phone"
-                    >
-                      010-2667-4100
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
+              </PopoverContent>
+            </Popover>
+          )}
 
           {/* Cart */}
           <Tooltip>

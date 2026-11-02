@@ -176,7 +176,7 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
 
         {/* LEFT */}
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-          <Button
+          {!isHome && <Button
             size="icon"
             variant="ghost"
             className="h-8 w-8 text-white hover:bg-black/20"
@@ -184,7 +184,7 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
             data-testid="button-sidebar-toggle"
           >
             <Menu className="h-4 w-4" />
-          </Button>
+          </Button>}
 
           <button
             type="button"
@@ -474,6 +474,7 @@ function AppHeader({ selectedCompany, onCompanyChange }: { selectedCompany: stri
 
 export default function App() {
   const [selectedCompany, setSelectedCompany] = useState("동원약품");
+  const [location] = useLocation();
   const style = {
     "--sidebar-width": "16rem",
     "--sidebar-width-icon": "5rem",
@@ -486,7 +487,7 @@ export default function App() {
           <div className="flex flex-col h-screen w-full">
             <AppHeader selectedCompany={selectedCompany} onCompanyChange={setSelectedCompany} />
             <div className="flex flex-1 overflow-hidden">
-              <AppSidebar selectedColor={COMPANY_META[selectedCompany]?.hex || "#2563eb"} />
+              {location !== "/" && <AppSidebar selectedColor={COMPANY_META[selectedCompany]?.hex || "#2563eb"} />}
               <main className="flex-1 overflow-hidden bg-gray-50">
                 <Router
                   selectedColor={COMPANY_META[selectedCompany]?.hex || "#2563eb"}

@@ -75,7 +75,7 @@ const menuItems = [
   },
 ];
 
-const footerItems = [
+export const footerItems = [
   { title: "유팜몰", url: "https://www.upharmmall.co.kr/", icon: ExternalLink, external: true },
   { title: "고객센터", url: "/notice", icon: Bell, external: false },
   { title: "원격지원", url: "https://www.anydesk.com/", icon: Monitor, external: true },

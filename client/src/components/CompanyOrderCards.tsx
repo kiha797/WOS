@@ -1,4 +1,5 @@
 import { ArrowUpRight, Building2 } from "lucide-react";
+import type { ReactNode } from "react";
 import { useCompanyLogos } from "@/hooks/use-company-logos";
 
 export interface OrderCompany {
@@ -11,21 +12,22 @@ export interface OrderCompany {
 interface CompanyOrderCardsProps {
   companies: OrderCompany[];
   onChooseCompany: (company: string) => void;
+  headingActions?: ReactNode;
 }
 
-export default function CompanyOrderCards({ companies, onChooseCompany }: CompanyOrderCardsProps) {
+export default function CompanyOrderCards({ companies, onChooseCompany, headingActions }: CompanyOrderCardsProps) {
   const companyLogos = useCompanyLogos();
 
   return (
     <section aria-labelledby="company-order-heading" className="space-y-3">
-      <div className="flex flex-wrap items-end justify-between gap-2">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 id="company-order-heading" className="text-base font-semibold tracking-tight text-slate-800">
             주문회사 선택
           </h2>
           <p className="mt-1 text-xs text-slate-500">회사를 선택하면 해당 회사의 주문 화면으로 이동합니다.</p>
         </div>
-        <span className="text-[11px] font-medium tracking-wide text-slate-400">ORDER BY COMPANY</span>
+        {headingActions}
       </div>
 
       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3 xl:grid-cols-6">

@@ -7,7 +7,7 @@ import type { OrderCompany } from "@/components/CompanyOrderCards";
 const STORAGE_KEY = "wos.prototype.home-company-selection.v1";
 const MAX_COMPANIES = 6;
 
-function sanitizeSelection(value: unknown, availableNames: string[]) {
+export function sanitizeSelection(value: unknown, availableNames: string[]) {
   if (!Array.isArray(value)) return [];
   const knownNames = new Set(availableNames);
   const uniqueNames: string[] = [];
@@ -164,7 +164,7 @@ export function useHomeCompanyDemoSelection(companies: OrderCompany[]) {
       if (storedValue !== null) {
         const parsed: unknown = JSON.parse(storedValue);
         const sanitized = sanitizeSelection(parsed, availableNames);
-        if (sanitized.length > 0) initialSelection = sanitized;
+        if (Array.isArray(parsed) && (parsed.length === 0 || sanitized.length > 0)) initialSelection = sanitized;
       }
     } catch {
       warning = "브라우저 저장소를 읽지 못했습니다. 이 설정은 현재 화면에서만 유지됩니다.";
@@ -176,13 +176,14 @@ export function useHomeCompanyDemoSelection(companies: OrderCompany[]) {
 
   function updateSelection(names: string[]) {
     const sanitized = sanitizeSelection(names, availableNames);
-    if (sanitized.length === 0) return;
     setSelectedNames(sanitized);
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
       setStorageWarning("");
+      return true;
     } catch {
       setStorageWarning("브라우저 저장소에 저장하지 못했습니다. 이 설정은 현재 화면에서만 유지됩니다.");
+      return false;
     }
   }
 

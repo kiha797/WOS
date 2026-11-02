@@ -35,7 +35,7 @@ interface CompanyOrderCardsProps {
 export default function CompanyOrderCards({ companies, onChooseCompany, companyOrder, headingActions }: CompanyOrderCardsProps) {
   const companyLogos = useCompanyLogos();
   // Keep the saved prototype selection; production should provide the account's trading companies.
-  const { visibleCompanies } = useHomeCompanyDemoSelection(companies);
+  const { selectedNames, visibleCompanies, storageWarning: visibilityWarning, updateSelection } = useHomeCompanyDemoSelection(companies);
   const { orderedCompanies, storageWarning, saveVisibleOrder } = companyOrder;
   const visibleNames = visibleCompanies.map((company) => company.name);
   const visibleNameSet = new Set(visibleNames);
@@ -80,8 +80,10 @@ export default function CompanyOrderCards({ companies, onChooseCompany, companyO
     finishCardDrag();
   }
 
-  function saveDialogOrder(names: string[]) {
-    return saveVisibleOrder(visibleNames, names);
+  function saveDialogOrder(names: string[], nextVisibleNames: string[]) {
+    const orderSaved = saveVisibleOrder(companies.map((company) => company.name), names);
+    const visibilitySaved = updateSelection(nextVisibleNames);
+    return orderSaved && visibilitySaved;
   }
 
   return (
@@ -134,7 +136,7 @@ export default function CompanyOrderCards({ companies, onChooseCompany, companyO
             items={displayCompanies.map((company) => company.name)}
             strategy={horizontalListSortingStrategy}
           >
-            <div className="grid w-full grid-flow-col auto-cols-[minmax(160px,1fr)] gap-2.5 sm:gap-3">
+            <div className="grid w-full min-w-[1010px] grid-cols-6 gap-2.5 sm:min-w-[1020px] sm:gap-3">
               {displayCompanies.map((company, index) => (
                 <SortableOrderCompanyCard
                   key={company.name}
@@ -155,17 +157,23 @@ export default function CompanyOrderCards({ companies, onChooseCompany, companyO
           </SortableContext>
         </DndContext>
       </div>
-      {storageWarning && !sortDialogOpen && (
+      {displayCompanies.length === 0 && (
+        <p role="status" className="rounded-lg border border-dashed border-slate-200 px-4 py-5 text-sm text-slate-500">
+          모든 회사 카드가 숨겨져 있습니다. 제목 옆 순서 변경 버튼에서 눈 아이콘을 눌러 다시 표시하세요.
+        </p>
+      )}
+      {(storageWarning || visibilityWarning) && !sortDialogOpen && (
         <p role="status" className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-          {storageWarning}
+          {storageWarning || visibilityWarning}
         </p>
       )}
       <CompanyOrderDialog
         open={sortDialogOpen}
         onOpenChange={setSortDialogOpen}
-        companies={displayCompanies}
-        companyNames={displayCompanies.map((company) => company.name)}
-        storageWarning={storageWarning}
+        companies={orderedCompanies}
+        companyNames={orderedCompanies.map((company) => company.name)}
+        visibleNames={selectedNames}
+        storageWarning={storageWarning || visibilityWarning}
         onSave={saveDialogOrder}
       />
     </section>
